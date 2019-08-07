@@ -11,6 +11,7 @@ class Airport
   end
 
   def land(plane)
+    raise "plane already landed" if planes.include?(plane)
     raise "airport full" if full?
     raise "not safe to land" if stormy?
 
@@ -19,6 +20,7 @@ class Airport
   end
 
   def take_off(plane)
+    raise "plane not registered" unless planes.include?(plane)
     raise "not safe to take off" if stormy?
 
     planes.delete_if { |p| p == plane }

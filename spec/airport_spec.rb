@@ -33,6 +33,12 @@ RSpec.describe Airport do
 
       expect(subject.planes).to include(plane)
     end
+
+    it "rejects planes that have already landed" do
+      subject.land(plane)
+
+      expect { subject.land(plane) }.to raise_error "plane already landed"
+    end
   end
 
   context "when a plane takes off" do
@@ -62,17 +68,25 @@ RSpec.describe Airport do
 
       expect(subject.planes).to include(another_plane)
     end
+
+    it "rejects planes that have not already landed" do
+      another_plane = instance_double("Plane")
+
+      expect { subject.take_off(another_plane) }.to raise_error "plane not registered"
+    end
   end
 
   context "when it is stormy" do
     before do
+      subject.land(plane)
       allow(weather).to receive(:stormy?).and_return(true)
     end
 
     it { is_expected.to be_stormy }
 
     it "prevents planes from landing" do
-      expect { subject.land(plane) }.to raise_error("not safe to land")
+      another_plane = instance_double("Plane")
+      expect { subject.land(another_plane) }.to raise_error("not safe to land")
     end
 
     it "prevents planes from taking off" do
