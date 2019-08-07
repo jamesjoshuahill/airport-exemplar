@@ -18,9 +18,6 @@ RSpec.describe Airport do
     expect(subject.capacity).to eq(8)
   end
 
-  it { is_expected.not_to be_stormy }
-  it { is_expected.not_to be_full }
-
   context "when a plane lands" do
     it "instructs the plane to land" do
       subject.land(plane)
@@ -82,8 +79,6 @@ RSpec.describe Airport do
       allow(weather).to receive(:stormy?).and_return(true)
     end
 
-    it { is_expected.to be_stormy }
-
     it "prevents planes from landing" do
       another_plane = instance_double("Plane")
       expect { subject.land(another_plane) }.to raise_error("not safe to land")
@@ -96,8 +91,6 @@ RSpec.describe Airport do
 
   context "when the airport is full" do
     let(:subject) { Airport.new(weather, 0) }
-
-    it { is_expected.to be_full }
 
     it "prevents planes from landing" do
       expect { subject.land(plane) }.to raise_error("airport full")

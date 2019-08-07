@@ -27,6 +27,8 @@ class Airport
     plane.take_off
   end
 
+  private
+
   def stormy?
     @weather.stormy?
   end
