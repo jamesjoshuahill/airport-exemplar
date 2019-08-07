@@ -9,11 +9,25 @@ RSpec.describe Plane do
     expect(subject).not_to be_flying
   end
 
-  it "can take off" do
-    subject.land
+  it "cannot take off" do
+    expect { subject.take_off }.to raise_error "already flying"
+  end
 
-    subject.take_off
+  context "when landed" do
+    before do
+      subject.land
+    end
 
-    expect(subject).to be_flying
+    it { is_expected.not_to be_flying }
+
+    it "can take off" do
+      subject.take_off
+
+      expect(subject).to be_flying
+    end
+
+    it "cannot land" do
+      expect { subject.land }.to raise_error "already landed"
+    end
   end
 end
