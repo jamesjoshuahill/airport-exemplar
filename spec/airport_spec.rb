@@ -1,7 +1,7 @@
 require 'airport'
 
 RSpec.describe Airport do
-  let(:subject) { Airport.new(weather) }
+  let(:subject) { Airport.new(weather: weather) }
   let(:weather) { instance_double("Weather") }
   let(:plane) { instance_double("Plane") }
 
@@ -90,7 +90,7 @@ RSpec.describe Airport do
   end
 
   context "when the airport is full" do
-    let(:subject) { Airport.new(weather, 0) }
+    let(:subject) { Airport.new(weather: weather, capacity: 0) }
 
     it "prevents planes from landing" do
       expect { subject.land(plane) }.to raise_error("airport full")
