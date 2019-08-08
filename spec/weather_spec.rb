@@ -1,10 +1,15 @@
 require 'weather'
 
 RSpec.describe Weather do
-  it "is stormy about a third of the time" do
-    results = Array.new(1000) { subject.stormy? }
+  it "can be sunny" do
+    srand(0)
 
-    ratio = results.count(true).fdiv(results.length)
-    expect(ratio).to be_within(0.1).of(0.3)
+    expect(subject.outlook).to eq(:sunny)
+  end
+
+  it "can be stormy" do
+    srand(1)
+
+    expect(subject.outlook).to eq(:stormy)
   end
 end

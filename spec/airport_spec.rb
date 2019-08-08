@@ -7,7 +7,7 @@ RSpec.describe Airport do
 
   before do
     allow(plane).to receive(:land)
-    allow(weather).to receive(:stormy?).and_return(false)
+    allow(weather).to receive(:outlook).and_return(:sunny)
   end
 
   it "has no planes" do
@@ -76,7 +76,7 @@ RSpec.describe Airport do
   context "when it is stormy" do
     before do
       subject.land(plane)
-      allow(weather).to receive(:stormy?).and_return(true)
+      allow(weather).to receive(:outlook).and_return(:stormy)
     end
 
     it "prevents planes from landing" do

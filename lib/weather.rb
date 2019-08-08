@@ -1,5 +1,7 @@
 class Weather
-  def stormy?
-    rand() < 0.3
+  OUTLOOKS = [:sunny, :stormy]
+
+  def outlook
+    OUTLOOKS.sample
   end
 end
