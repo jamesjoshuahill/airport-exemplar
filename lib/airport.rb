@@ -23,7 +23,7 @@ class Airport
     raise "plane not registered" unless planes.include?(plane)
     raise "not safe to take off" if stormy?
 
-    planes.delete_if { |p| p == plane }
+    planes.delete(plane)
     plane.take_off
   end
 
