@@ -1,21 +1,19 @@
 class Plane
-  def initialize
-    @flying = true
-  end
-
   def flying?
-    @flying
+    @airport.nil?
   end
 
-  def land
+  def land(airport)
     raise "already landed" unless flying?
+    raise "not safe to land" unless airport.clear_to_land?
 
-    @flying = false
+    @airport = airport
   end
 
   def take_off
     raise "already flying" if flying?
+    raise "not safe for take off" unless @airport.clear_for_take_off?
 
-    @flying = true
+    @airport = nil
   end
 end

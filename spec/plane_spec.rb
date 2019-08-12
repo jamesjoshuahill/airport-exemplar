@@ -1,33 +1,52 @@
 require 'plane'
 
 RSpec.describe Plane do
-  it { is_expected.to be_flying }
-
-  it "can land" do
-    subject.land
-
-    expect(subject).not_to be_flying
+  let(:airport) { double "Airport" }
+  before do
+    allow(airport).to receive(:clear_to_land?).and_return(true)
   end
+
+  it { is_expected.to be_flying }
 
   it "cannot take off" do
     expect { subject.take_off }.to raise_error "already flying"
   end
 
-  context "when landed" do
+  it "checks it is clear to land" do
+    subject.land(airport)
+
+    expect(airport).to have_received(:clear_to_land?)
+  end
+
+  it "rejects instruction to land if not safe" do
+    allow(airport).to receive(:clear_to_land?).and_return(false)
+
+    expect { subject.land(airport) }.to raise_error "not safe to land"
+  end
+
+  context "when landed at an airport" do
     before do
-      subject.land
+      subject.land(airport)
     end
 
     it { is_expected.not_to be_flying }
 
-    it "can take off" do
-      subject.take_off
-
-      expect(subject).to be_flying
+    it "rejects instructions to land" do
+      expect { subject.land(airport) }.to raise_error "already landed"
     end
 
-    it "cannot land" do
-      expect { subject.land }.to raise_error "already landed"
+    it "checks it is clear to take off" do
+      allow(airport).to receive(:clear_for_take_off?).and_return(true)
+
+      subject.take_off
+
+      expect(airport).to have_received(:clear_for_take_off?)
+    end
+
+    it "rejects instruction to take off if not safe" do
+      allow(airport).to receive(:clear_for_take_off?).and_return(false)
+
+      expect { subject.take_off }.to raise_error "not safe for take off"
     end
   end
 end

@@ -1,30 +1,22 @@
 class Airport
   DEFAULT_CAPACITY = 8
 
-  attr_reader :planes
-  attr_reader :capacity
-
   def initialize(weather: Weather.new, capacity: DEFAULT_CAPACITY)
-    @planes = []
+    @no_of_planes = 0
     @weather = weather
     @capacity = capacity
   end
 
-  def land(plane)
-    raise "plane already landed" if planes.include?(plane)
-    raise "airport full" if full?
-    raise "not safe to land" if stormy?
+  def clear_to_land?
+    return false if stormy? || full?
 
-    planes.push(plane)
-    plane.land
+    @no_of_planes += 1
   end
 
-  def take_off(plane)
-    raise "plane not registered" unless planes.include?(plane)
-    raise "not safe to take off" if stormy?
+  def clear_for_take_off?
+    return false if stormy?
 
-    planes.delete(plane)
-    plane.take_off
+    @no_of_planes -= 1
   end
 
   private
@@ -34,6 +26,6 @@ class Airport
   end
 
   def full?
-    planes.length == capacity
+    @no_of_planes == @capacity
   end
 end
