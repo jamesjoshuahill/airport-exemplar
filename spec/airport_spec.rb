@@ -2,8 +2,8 @@ require 'airport'
 
 RSpec.describe Airport do
   let(:subject) { Airport.new(weather: weather) }
-  let(:weather) { instance_double("Weather") }
-  let(:plane) { instance_double("Plane") }
+  let(:weather) { double("Weather") }
+  let(:plane) { double("Plane") }
 
   before do
     allow(plane).to receive(:land)
@@ -57,7 +57,7 @@ RSpec.describe Airport do
     end
 
     it "does not deregister other landed planes" do
-      another_plane = instance_double("Plane")
+      another_plane = double("Plane")
       allow(another_plane).to receive(:land)
       subject.land(another_plane)
 
@@ -67,7 +67,7 @@ RSpec.describe Airport do
     end
 
     it "rejects planes that have not already landed" do
-      another_plane = instance_double("Plane")
+      another_plane = double("Plane")
 
       expect { subject.take_off(another_plane) }.to raise_error "plane not registered"
     end
@@ -80,7 +80,7 @@ RSpec.describe Airport do
     end
 
     it "prevents planes from landing" do
-      another_plane = instance_double("Plane")
+      another_plane = double("Plane")
       expect { subject.land(another_plane) }.to raise_error("not safe to land")
     end
 
