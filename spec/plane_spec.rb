@@ -1,28 +1,26 @@
 require 'plane'
 
 RSpec.describe Plane do
-  let(:airport) { double(:airport) }
+  let(:airport) { double(:airport, :clear_to_land? => true) }
 
-  before do
-    allow(airport).to receive(:clear_to_land?).and_return(true)
-  end
+  context "when it is flying" do
+    it { is_expected.to be_flying }
 
-  it { is_expected.to be_flying }
+    it "cannot take off" do
+      expect { subject.take_off }.to raise_error "already flying"
+    end
 
-  it "cannot take off" do
-    expect { subject.take_off }.to raise_error "already flying"
-  end
+    it "checks it is clear to land" do
+      subject.land(airport)
 
-  it "checks it is clear to land" do
-    subject.land(airport)
+      expect(airport).to have_received(:clear_to_land?)
+    end
 
-    expect(airport).to have_received(:clear_to_land?)
-  end
+    it "rejects instruction to land if not safe" do
+      allow(airport).to receive(:clear_to_land?).and_return(false)
 
-  it "rejects instruction to land if not safe" do
-    allow(airport).to receive(:clear_to_land?).and_return(false)
-
-    expect { subject.land(airport) }.to raise_error "not safe to land"
+      expect { subject.land(airport) }.to raise_error "not safe to land"
+    end
   end
 
   context "when landed at an airport" do
