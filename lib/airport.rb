@@ -8,7 +8,7 @@ class Airport
   end
 
   def clear_to_land?
-    return false if stormy? || full?
+    return false if full? || stormy?
 
     @no_of_planes += 1
   end
