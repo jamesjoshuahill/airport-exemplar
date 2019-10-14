@@ -2,21 +2,34 @@ class Airport
   DEFAULT_CAPACITY = 8
 
   def initialize(weather: Weather.new, capacity: DEFAULT_CAPACITY)
-    @no_of_planes = 0
     @weather = weather
     @capacity = capacity
+    @planes = []
   end
 
   def clear_to_land?
-    return false if full? || stormy?
-
-    @no_of_planes += 1
+    !full? && !stormy?
   end
 
   def clear_for_take_off?
-    return false if stormy?
+    !stormy?
+  end
 
-    @no_of_planes -= 1
+  def register(plane)
+    raise "already registered" if registered?(plane)
+    raise "airport full" if full?
+
+    @planes.push(plane)
+  end
+
+  def deregister(plane)
+    raise "not registered" if !registered?(plane)
+
+    @planes.delete(plane)
+  end
+
+  def registered?(plane)
+    @planes.include?(plane)
   end
 
   private
@@ -26,6 +39,6 @@ class Airport
   end
 
   def full?
-    @no_of_planes == @capacity
+    @planes.length == @capacity
   end
 end
