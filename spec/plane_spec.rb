@@ -1,7 +1,8 @@
 require 'plane'
 
 RSpec.describe Plane do
-  let(:airport) { double "Airport" }
+  let(:airport) { double(:airport) }
+
   before do
     allow(airport).to receive(:clear_to_land?).and_return(true)
   end

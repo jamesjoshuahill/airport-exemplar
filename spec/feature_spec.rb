@@ -2,8 +2,7 @@ RSpec.describe "Air traffic control" do
   it "can land and take off a number of planes at an airport" do
     plane1 = Plane.new
     plane2 = Plane.new
-    weather = double("Weather")
-    allow(weather).to receive(:outlook).and_return(:sunny)
+    weather = double(:weather, :outlook => :sunny)
     airport = Airport.new(weather: weather)
 
     plane1.land(airport)

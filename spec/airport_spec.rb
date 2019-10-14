@@ -1,9 +1,9 @@
 require 'airport'
 
 RSpec.describe Airport do
-  let(:subject) { Airport.new(weather: weather) }
-  let(:weather) { double("Weather") }
-  let(:plane) { double("Plane") }
+  subject { Airport.new(weather: weather) }
+  let(:weather) { double(:weather) }
+  let(:plane) { double(:plane) }
 
   before do
     allow(weather).to receive(:outlook).and_return(:sunny)
@@ -22,7 +22,7 @@ RSpec.describe Airport do
   end
 
   context "when the airport is full" do
-    let(:subject) { Airport.new(weather: weather, capacity: 0) }
+    subject { Airport.new(weather: weather, capacity: 0) }
 
     it { is_expected.not_to be_clear_to_land }
   end
